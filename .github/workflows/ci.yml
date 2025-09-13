@@ -1,0 +1,29 @@
+name: pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nasm gcc-multilib
+
+      - name: clone unity 
+        run: |
+          git clone https://github.com/ThrowTheSwitch/Unity.git test/unity
+
+      - name: build tests
+        run: make test
+
+      - name: run tests
+        run: make test-run
+
+      - name: clean 
+        run: make clean
